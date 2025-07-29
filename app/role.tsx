@@ -5,26 +5,68 @@ import {
   ImageBackground,
   Dimensions,
   Pressable,
-  Image
+  Image,
+  Animated,
+  PanResponder
 } from "react-native";
-import React from "react";
+import React, { useRef } from "react";
 import { StatusBar } from "expo-status-bar";
-import { router } from "expo-router";
+import { router, useNavigation } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Colors, Fonts } from "../shared/tokens";
 
-const { width, height } = Dimensions.get("window");
+const { width: SCREEN_WIDTH, height } = Dimensions.get("window");
+const BUTTON_WIDTH = SCREEN_WIDTH - 40;
+const CIRCLE_SIZE = 60;
+const MARGIN = 10;
+const MAX_TRANSLATE = BUTTON_WIDTH - CIRCLE_SIZE - MARGIN;
 
 const Role = () => {
+  const navigation = useNavigation<any>();
+
+  // 🔄 Har bir tugma uchun alohida translateX qiymati
+  const translateXSignIn = useRef(new Animated.Value(0)).current;
+  const translateXSignUp = useRef(new Animated.Value(0)).current;
+
+  // 🔁 PanResponder yaratish funksiyasi
+  const createPanResponder = (
+    translateX: Animated.Value,
+    onSuccess: () => void
+  ) =>
+    PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onPanResponderMove: (_, gestureState) => {
+        const newX = Math.min(Math.max(0, gestureState.dx), MAX_TRANSLATE);
+        translateX.setValue(newX);
+      },
+      onPanResponderRelease: (_, gestureState) => {
+        const shouldNavigate = gestureState.dx > MAX_TRANSLATE * 0.7;
+        if (shouldNavigate) {
+          onSuccess();
+        } else {
+          Animated.spring(translateX, {
+            toValue: 0,
+            useNativeDriver: true
+          }).start();
+        }
+      }
+    });
+
+  // 🧭 Har bir button uchun alohida panResponder
+  const panResponderSignIn = useRef(
+    createPanResponder(translateXSignIn, () => navigation.navigate("login"))
+  ).current;
+
+  const panResponderSignUp = useRef(
+    createPanResponder(translateXSignUp, () => router.push("login"))
+  ).current;
+
   return (
-    // <SafeAreaView>
     <View style={{}}>
       <StatusBar style="light" />
       <ImageBackground
-        style={{ width: width, height: height }}
+        style={{ width: SCREEN_WIDTH, height: height }}
         source={require("../assets/images/2nd-background-img.png")}
-        // width={width}
-        // height={height}
       >
         <View style={{}}>
           <Pressable
@@ -34,6 +76,7 @@ const Role = () => {
             <Image source={require("../assets/icons/arrow.left.png")} />
           </Pressable>
         </View>
+
         <View style={styles.textFolder}>
           <Text style={[styles.envoyText, { fontFamily: "RobotoRegular" }]}>
             Ro‘lingizni tanlang
@@ -51,67 +94,83 @@ const Role = () => {
         </View>
 
         <View
-          style={[
-            styles.btnsFolder,
-            {
-              position: "absolute",
-              bottom: "10%",
-              gap: 15,
-              paddingHorizontal: 32
-            }
-          ]}
+          style={{
+            position: "absolute",
+            bottom: "10%",
+            gap: 16,
+            paddingHorizontal: 32,
+            alignItems: "center",
+            justifyContent: "center"
+          }}
         >
-          <Pressable
-            onPress={() => router.push("login")}
-            style={{
-              width: width * 0.8,
-              height: 72,
-              borderRadius: 70,
-              backgroundColor: Colors.orange,
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-              paddingLeft: 10,
-              paddingRight: 32
-            }}
+          <View
+            style={[
+              styles.container,
+              {
+                position: "relative",
+                bottom: 10,
+                right: 10,
+                justifyContent: "center"
+              }
+            ]}
           >
-            <Image
-              source={require("../assets/icons/customer .png")}
-              style={{ marginTop: 8 }}
-            />
-            <Text style={{ color: "#fff", fontSize: 20, fontWeight: 700 }}>
-              Buyurtmachi
-            </Text>
-            <Image source={require("../assets/icons/next-icon.png")} />
-          </Pressable>
-          {/*  */}
-          <Pressable
-            onPress={() => router.push("login")}
-            style={{
-              width: width * 0.8,
-              height: 72,
-              borderRadius: 70,
-              backgroundColor: Colors.orange,
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-              paddingLeft: 10,
-              paddingRight: 32
-            }}
+            <View style={[styles.buttonBackground, { position: "absolute" }]}>
+              <Text style={styles.label}>Buyurtmachi</Text>
+              <Image source={require("../assets/icons/next-icon.png")} />
+            </View>
+
+            <Animated.View
+              style={[
+                styles.circle,
+                {
+                  transform: [{ translateX: translateXSignIn }],
+                  marginLeft: 5,
+                  paddingTop: 7
+                }
+              ]}
+              {...panResponderSignIn.panHandlers}
+            >
+              <View style={styles.iconPlaceholder}>
+                <Image source={require("../assets/icons/customer.png")} />
+              </View>
+            </Animated.View>
+          </View>
+
+          <View
+            style={[
+              styles.container,
+              {
+                position: "relative",
+                bottom: 10,
+                right: 10,
+                justifyContent: "center"
+              }
+            ]}
           >
-            <Image
-              source={require("../assets/icons/driver.png")}
-              style={{ marginTop: 8 }}
-            />
-            <Text style={{ color: "#fff", fontSize: 20, fontWeight: 700 }}>
-              Haydovchi
-            </Text>
-            <Image source={require("../assets/icons/next-icon.png")} />
-          </Pressable>
+            <View style={[styles.buttonBackground, { position: "absolute" }]}>
+              <Text style={styles.label}>Haydovchi</Text>
+              <Image source={require("../assets/icons/next-icon.png")} />
+            </View>
+
+            <Animated.View
+              style={[
+                styles.circle,
+                {
+                  transform: [{ translateX: translateXSignUp }],
+                  marginLeft: 5,
+                  paddingTop: 7
+                }
+              ]}
+              {...panResponderSignUp.panHandlers}
+            >
+              <View style={styles.iconPlaceholder}>
+                <Image source={require("../assets/icons/driver.png")} />
+              </View>
+            </Animated.View>
+          </View>
         </View>
       </ImageBackground>
     </View>
-    // </SafeAreaView>
   );
 };
 
@@ -137,7 +196,50 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     lineHeight: 26
   },
-  btnsFolder: {
-    // top: 10
+
+  /*
+  
+  
+  
+  
+  */
+
+  container: {
+    width: BUTTON_WIDTH,
+    height: CIRCLE_SIZE,
+    justifyContent: "center"
+  },
+  buttonBackground: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "#E86D24",
+    borderRadius: CIRCLE_SIZE,
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 20,
+    justifyContent: "space-between",
+    height: 70
+  },
+  label: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 16,
+    marginLeft: 100
+  },
+  arrow: {
+    color: "white",
+    fontSize: 18
+  },
+  circle: {
+    width: CIRCLE_SIZE,
+    height: CIRCLE_SIZE,
+    borderRadius: CIRCLE_SIZE / 2,
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    marginTop: 10
+  },
+  iconPlaceholder: {
+    alignItems: "center",
+    justifyContent: "center"
   }
 });

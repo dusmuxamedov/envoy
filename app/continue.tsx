@@ -134,49 +134,6 @@ const Continue = () => {
               </View>
             </Animated.View>
           </View>
-
-          {/* <Pressable
-            onPress={() => router.push("button")}
-            style={{
-              backgroundColor: Colors.orange,
-              borderRadius: 90,
-              height: 72,
-
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between"
-            }}
-          >
-            <Pressable
-              onPress={() => {
-                router.push("/first-screen");
-              }}
-              style={{}}
-            >
-              <Image
-                source={require("../assets/icons/back.png")}
-                style={{
-                  width: 56,
-                  height: 56,
-                  resizeMode: "contain",
-                  marginLeft: 8,
-
-                  //  #savol shu img lar o'rtaga turmadi. padding bilan tushirdim
-                  marginTop: 5
-                  //
-                }}
-              />
-            </Pressable>
-
-            <Text style={styles.startText}>Boshlash</Text>
-
-            <Image
-              style={{ marginRight: 32 }}
-              source={require("../assets/icons/next-icon.png")}
-              width={32}
-              height={32}
-            />
-          </Pressable> */}
         </View>
       </SafeAreaView>
     </SafeAreaProvider>

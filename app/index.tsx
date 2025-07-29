@@ -11,6 +11,7 @@ export default function App() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
+      // router.push("flatList");
       router.push("first-screen");
     }, 2000);
 
@@ -21,7 +22,6 @@ export default function App() {
     <View style={styles.container}>
       <StatusBar style="light" />
       <Image source={require("../assets/images/envoy logo.png")} />
-      {/* <Pressable onPress={() => router.push("/SignUpInput")}> */}
       <Pressable onPress={() => router.push("/first-screen")}>
         <Text style={styles.text}>Envoy</Text>
       </Pressable>

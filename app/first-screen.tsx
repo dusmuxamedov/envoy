@@ -11,6 +11,8 @@ import {
   PanResponder,
   TouchableWithoutFeedback
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+
 import React, { useRef } from "react";
 import { Link, Stack, router } from "expo-router";
 import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
@@ -55,8 +57,20 @@ const FirstScreen = () => {
     <SafeAreaProvider>
       <View style={{}}>
         <Stack.Screen options={{ presentation: "card" }} />
+        <LinearGradient
+          colors={["#161616", "rgba(0,0,0,0)"]}
+          start={{ x: 0, y: 1 }}
+          end={{ x: 0, y: 0.5 }}
+          style={{
+            width: SCREEN_WIDTH,
+            height: height * 0.5,
+            position: "absolute",
+            top: 0,
+            zIndex: 1
+          }}
+        />
         <Image
-          source={require("../assets/images/transformerCar.png")}
+          source={require("../assets/images/a.jpg")}
           style={{
             width: SCREEN_WIDTH,
             height: height * 0.5,
@@ -83,7 +97,10 @@ const FirstScreen = () => {
               // marginTop: 74
             }}
           >
-            <Pressable style={styles.roteredBtn}></Pressable>
+            <Pressable
+              style={styles.roteredBtn}
+              onPress={() => router.push("flatList")}
+            ></Pressable>
 
             <Pressable
               style={styles.roterBtn}

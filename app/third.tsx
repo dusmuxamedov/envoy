@@ -9,6 +9,8 @@ import {
   Animated,
   PanResponder
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+
 import React, { useRef } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { router, useNavigation } from "expo-router";
@@ -49,8 +51,20 @@ const Continue = () => {
   return (
     <SafeAreaProvider>
       <View style={{}}>
+        <LinearGradient
+          colors={["#161616", "rgba(0,0,0,0)"]}
+          start={{ x: 0, y: 1 }}
+          end={{ x: 0, y: 0.5 }}
+          style={{
+            width: SCREEN_WIDTH,
+            height: height * 0.5,
+            position: "absolute",
+            top: 0,
+            zIndex: 1
+          }}
+        />
         <Image
-          source={require("../assets/images/scania.png")}
+          source={require("../assets/images/c.jpg")}
           style={{
             width: SCREEN_WIDTH,
             height: height * 0.5,
@@ -132,50 +146,6 @@ const Continue = () => {
               </View>
             </Animated.View>
           </View>
-
-          {/* 
-          <Pressable
-            onPress={() => router.push("entrance")}
-            style={{
-              backgroundColor: Colors.orange,
-              borderRadius: 90,
-              height: 72,
-
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between"
-            }}
-          >
-            <Pressable
-              onPress={() => {
-                router.push("/continue");
-              }}
-              style={{}}
-            >
-              <Image
-                source={require("../assets/icons/back.png")}
-                style={{
-                  width: 56,
-                  height: 56,
-                  resizeMode: "contain",
-                  marginLeft: 8,
-
-                  //  #savol shu img lar o'rtaga turmadi. padding bilan tushirdim
-                  marginTop: 5
-                  //
-                }}
-              />
-            </Pressable>
-
-            <Text style={styles.startText}>Boshlash</Text>
-
-            <Image
-              style={{ marginRight: 32 }}
-              source={require("../assets/icons/next-icon.png")}
-              width={32}
-              height={32}
-            />
-          </Pressable> */}
         </View>
       </SafeAreaView>
     </SafeAreaProvider>
@@ -226,7 +196,6 @@ const styles = StyleSheet.create({
   container: {
     width: BUTTON_WIDTH,
     height: CIRCLE_SIZE,
-    // margin: 20,
     justifyContent: "center"
   },
   buttonBackground: {
@@ -243,7 +212,6 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     fontSize: 16,
-    // marginLeft: 25,
     alignItems: "center",
     justifyContent: "center",
     left: 0,
@@ -258,12 +226,9 @@ const styles = StyleSheet.create({
     width: CIRCLE_SIZE,
     height: CIRCLE_SIZE,
     borderRadius: CIRCLE_SIZE / 2,
-    // backgroundColor: "white",
-    // elevation: 5,
     justifyContent: "center",
     alignItems: "center",
     position: "absolute",
-    // marginLeft: 10,
     marginTop: 10
   },
   iconPlaceholder: {
