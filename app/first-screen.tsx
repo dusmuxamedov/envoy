@@ -119,7 +119,7 @@ const FirstScreen = () => {
             </Text>
             <Text style={styles.text}>
               Yuk egalarini va haydovchilarni bog‘lovchi innovatsion platforma.
-              Tez, ishonchli va qulay xizmat!
+              Tez, ishonchli va qulay xizmat!!
             </Text>
           </View>
 

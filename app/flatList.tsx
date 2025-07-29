@@ -136,7 +136,7 @@ export default function App() {
     },
     {
       id: 3,
-      title: "Yangi buyurtmalarni toping va daromad oling!",
+      title: "Yangi buyurtmalarni toping va daromad oling!!!",
       desc: "Bo‘sh yurish yo‘q! Envoy bilan yuklarni toping, qulay narxda tashish va barqaror daromadga ega bo‘ling.",
       img: require("../assets/images/c.jpg"),
       btn: (
